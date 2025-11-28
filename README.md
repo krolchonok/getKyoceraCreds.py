@@ -35,6 +35,26 @@ python3 getKyoceraCreds.py 10.0.0.10 -o result.txt
 (имя, email, FTP/SMB серверы, логины и пароли, если заданы). Обнаруженные пароли дополнительно подсвечиваются
 в выводе, а при использовании `-o/--output` все сообщения дублируются в указанный файл.
 
+## Metasploit module
 
+Файл `kyocera_address_book.rb` содержит вспомогательный модуль Metasploit,
+повторяющий логику исходного скрипта. Чтобы воспользоваться им, поместите файл в
+`modules/auxiliary/gather/` и загрузите в `msfconsole`:
 
+```bash
+# Быстрая установка через curl (Linux/macOS)
+mkdir -p ~/.msf4/modules/auxiliary/gather/
+curl -sL https://raw.githubusercontent.com/krolchonok/getKyoceraCreds.py/main/kyocera_address_book.rb -o ~/.msf4/modules/auxiliary/gather/kyocera_address_book.rb
+
+# Или вручную
+cp kyocera_address_book.rb $MSF_ROOT/modules/auxiliary/gather/
+msfconsole -q
+use auxiliary/gather/kyocera_address_book
+set RHOSTS 10.0.0.10
+run
+```
+
+Модуль автоматически создаёт экспорт адресной книги через SOAP, ждёт его готовности,
+загружает результат, сохраняет XML в loot и выводит найденные учётные данные или
+распарсенные записи адресной книги.
 
