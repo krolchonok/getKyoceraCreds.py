@@ -14,8 +14,26 @@ The python script connects to the MFP on TCP port 9091 and issues a SOAP request
 
 Feel free to submit a PR with improved parsing, as I never came back around to beautifying the output or exploit process.
 
-### Usage:
-`python3 getKyoceraCreds.py <printerip>`
+### Usage
+
+```bash
+# одиночный IP
+python3 getKyoceraCreds.py 10.0.0.10
+
+# несколько адресов через запятую или аргументами
+python3 getKyoceraCreds.py 10.0.0.10,10.0.0.20 -i 10.0.0.30
+
+# загрузка списка IP из файла (по одному в строке, поддерживаются строки через запятую)
+python3 getKyoceraCreds.py -f ips.txt
+
+# сохранение результата в файл
+python3 getKyoceraCreds.py 10.0.0.10 -o result.txt
+```
+
+Скрипт выводит прогресс по каждому устройству и пытается разобрать SOAP-ответы, показывая поля
+`login_name`, `login_password`, `email_address`, а при их отсутствии — подробные записи адресной книги
+(имя, email, FTP/SMB серверы, логины и пароли, если заданы). Обнаруженные пароли дополнительно подсвечиваются
+в выводе, а при использовании `-o/--output` все сообщения дублируются в указанный файл.
 
 
 
